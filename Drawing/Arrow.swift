@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct ArrowShape: Shape {
-    var width: CGFloat
-    let height: CGFloat = 200
+    var width: Double
+    let height: Double = 200
     
-    init(width: CGFloat) {
+    var animatableData: Double {
+        get { width }
+        set { width = newValue }
+    }
+    
+    init(width: Double) {
         self.width = width
     }
     
@@ -28,19 +33,22 @@ struct ArrowShape: Shape {
         
         return path
     }
-    
-    
 }
 
 struct Arrow: View {
-    @State private var width: CGFloat = 30
+    @State private var width: Double = 30
     
     var body: some View {
         VStack {
             ArrowShape(width: width)
                 .stroke(lineWidth: width)
+                .onTapGesture {
+                    withAnimation {
+                        width = Double.random(in: 1...50)
+                    }
+                }
             
-            Slider(value: $width.animation(.linear(duration: 1)), in: 1...50)
+//            Slider(value: $width, in: 1...50)
         }
     }
 }
